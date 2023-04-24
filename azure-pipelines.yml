@@ -1,0 +1,38 @@
+parameters:
+  - name: projectName
+    displayName: select project to run
+    type: string
+    default: project_a
+    values:
+      - project_a
+      - project_b
+      - project_c
+  - name: projectEnvironment
+    displayName: select environment to run project on
+    type: string
+    default: test
+    values:
+      - test
+      - development
+      - stage
+      - production
+
+trigger: none
+
+variables:
+  npm_config_cache: $(Pipeline.Workspace)/npm
+
+pool:
+  vmImage: <YOUR-MACHINE-NAME-HERE>
+
+stages:
+  - stage: cypressIntegrationTests
+    displayName: 'run cypress tests'
+
+    jobs:
+      - template: azure-templates/cypress-template.yml
+        parameters:
+          ProjectName: ${{ parameters.projectName }}
+          ProjectEnv: ${{ parameters.projectEnvironment }}
+          Username: <YOUR-CYPRESS-USERNAME-HERE>
+          Password: <YOUR-CYPRESS-PASSWORD-HERE>
