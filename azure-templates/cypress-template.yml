@@ -31,7 +31,7 @@ jobs:
           command: "install"
 
       - ${{ if eq(parameters.selectedSuiteName, 'project-a')  }}:
-          - script: npx cypress run --spec "cypress/e2e/project-a/integration/*.cy.js" --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true
+          - script: npx cypress run --spec "cypress/e2e/project-a/integration/*.cy.js"
             displayName: "running ${{ parameters.selectedSuiteName }}"
             env:
               CYPRESS_USERNAME: ${{ parameters.username }}
@@ -42,7 +42,7 @@ jobs:
               # can add extra env vars for specific suites only or change vars based on suite
 
       - ${{ if eq(parameters.selectedSuiteName, 'project-b')  }}:
-          - script: npx cypress run --spec "cypress/e2e/project-b/integration/*.cy.js" --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true
+          - script: npx cypress run --spec "cypress/e2e/project-b/integration/*.cy.js"
             displayName: "running ${{ parameters.selectedSuiteName }}"
             env:
               CYPRESS_USERNAME: ${{ parameters.username }}
