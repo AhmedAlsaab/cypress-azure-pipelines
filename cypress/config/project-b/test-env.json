@@ -1,0 +1,6 @@
+{
+  "baseUrl": "https://aws.amazon.com/",
+  "env": {
+    "someVarRandom": "HelloWorld"
+  }
+}

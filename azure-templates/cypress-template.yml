@@ -8,6 +8,8 @@ parameters:
   - name: password
     type: string
 
+# set a 'default' under 'type' with empty string if optional param
+
 jobs:
   - job: runCypressTests
     displayName: running cypress tests for ${{ paramaters.selectedProjectName }} on environment ${{ parameters.selectedProjectEnv }}
@@ -15,8 +17,8 @@ jobs:
     steps:
       - task: NodeTool@0 #https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/node-tool-v0?view=azure-pipelines
         inputs:
-          versionSpec: '16.x'
-        displayName: 'Install Node.js'
+          versionSpec: "16.x"
+        displayName: "Install Node.js"
 
       - task: Cache@2
         inputs:
@@ -26,11 +28,22 @@ jobs:
 
       - task: Npm@1 #https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/npm-v1?view=azure-pipelines
         inputs:
-          command: 'install'
+          command: "install"
 
-      - ${{ if eq(parameters.selectedSuiteName, 'smoke_tests')  }}:
-          - script: npx cypress run --spec "cypress/e2e/smoke_tests/integration/*.cy.js" --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true
-            displayName: 'running ${{ parameters.selectedSuiteName }}'
+      - ${{ if eq(parameters.selectedSuiteName, 'project-a')  }}:
+          - script: npx cypress run --spec "cypress/e2e/project-a/integration/*.cy.js" --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true
+            displayName: "running ${{ parameters.selectedSuiteName }}"
+            env:
+              CYPRESS_USERNAME: ${{ parameters.username }}
+              CYPRESS_PASSWORD: ${{ parameters.password }}
+              CYPRESS_suiteEnv: ${{ parameters.selectedSuiteEnv }} # can also hardcode the values in here
+              CYPRESS_suiteName: ${{ parameters.selectedSuiteName }}
+              # anything delcared as CYPRESS_ will become an env var Cypress can access
+              # can add extra env vars for specific suites only or change vars based on suite
+
+      - ${{ if eq(parameters.selectedSuiteName, 'project-b')  }}:
+          - script: npx cypress run --spec "cypress/e2e/project-b/integration/*.cy.js" --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true
+            displayName: "running ${{ parameters.selectedSuiteName }}"
             env:
               CYPRESS_USERNAME: ${{ parameters.username }}
               CYPRESS_PASSWORD: ${{ parameters.password }}

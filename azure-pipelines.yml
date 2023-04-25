@@ -2,11 +2,11 @@ parameters:
   - name: suiteName
     displayName: select suite to run
     type: string
-    default: smoke_tests
+    default: project-a
     values:
-      - smoke_tests
-      - sanity_tests
-      - regression_tests
+      - project-a
+      - project-b
+      - project-c
   - name: suiteEnvironment
     displayName: select environment to run suite on
     type: string
