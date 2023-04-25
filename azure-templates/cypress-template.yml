@@ -1,0 +1,38 @@
+parameters:
+  - name: selectedSuiteName
+    type: string
+  - name: selectedSuiteEnv
+    type: string
+  - name: username
+    type: string
+  - name: password
+    type: string
+
+jobs:
+  - job: runCypressTests
+    displayName: running cypress tests for ${{ paramaters.selectedProjectName }} on environment ${{ parameters.selectedProjectEnv }}
+    pool: #YOUR-BUILD-AGENT-NAME
+    steps:
+      - task: NodeTool@0 #https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/node-tool-v0?view=azure-pipelines
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Install Node.js'
+
+      - task: Cache@2
+        inputs:
+          key: 'version_NodeJs16x | npm | "$(Agent.OS)" | package-lock.json'
+          path: $(npm_config_cache)
+        displayName: Cache npm
+
+      - task: Npm@1 #https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/npm-v1?view=azure-pipelines
+        inputs:
+          command: 'install'
+
+      - ${{ if eq(parameters.selectedSuiteName, 'smoke_tests')  }}:
+          - script: npx cypress run --spec "cypress/e2e/smoke_tests/integration/*.cy.js" --reporter-options reportDir=cypress/reports,overwrite=false,html=false,json=true
+            displayName: 'running ${{ parameters.selectedSuiteName }}'
+            env:
+              CYPRESS_USERNAME: ${{ parameters.username }}
+              CYPRESS_PASSWORD: ${{ parameters.password }}
+              CYPRESS_suiteEnv: ${{ parameters.selectedSuiteEnv }}
+              CYPRESS_suiteName: ${{ parameters.selectedSuiteName }}

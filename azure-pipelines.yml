@@ -1,19 +1,19 @@
 parameters:
-  - name: projectName
-    displayName: select project to run
+  - name: suiteName
+    displayName: select suite to run
     type: string
-    default: project_a
+    default: smoke_tests
     values:
-      - project_a
-      - project_b
-      - project_c
-  - name: projectEnvironment
-    displayName: select environment to run project on
+      - smoke_tests
+      - sanity_tests
+      - regression_tests
+  - name: suiteEnvironment
+    displayName: select environment to run suite on
     type: string
     default: test
     values:
       - test
-      - development
+      - develop
       - stage
       - production
 
@@ -23,7 +23,7 @@ variables:
   npm_config_cache: $(Pipeline.Workspace)/npm
 
 pool:
-  vmImage: <YOUR-MACHINE-NAME-HERE>
+  vmImage: # YOUR-BUILD-AGENT-NAME-HERE
 
 stages:
   - stage: cypressIntegrationTests
@@ -32,7 +32,7 @@ stages:
     jobs:
       - template: azure-templates/cypress-template.yml
         parameters:
-          ProjectName: ${{ parameters.projectName }}
-          ProjectEnv: ${{ parameters.projectEnvironment }}
-          Username: <YOUR-CYPRESS-USERNAME-HERE>
-          Password: <YOUR-CYPRESS-PASSWORD-HERE>
+          selectedSuiteName: ${{ parameters.suiteName }}
+          selectedSuiteEnv: ${{ parameters.suiteEnvironment }}
+          username: # YOUR-CYPRESS-USERNAME-HERE
+          password: # YOUR-CYPRESS-PASSWORD-HERE
