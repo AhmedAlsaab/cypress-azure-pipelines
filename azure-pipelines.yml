@@ -17,7 +17,7 @@ parameters:
       - stage
       - production
 
-trigger: none
+trigger: none # this is a manually run build, not an automated post-PR build, so no automated triggers to invoke needed
 
 variables:
   npm_config_cache: $(Pipeline.Workspace)/npm
