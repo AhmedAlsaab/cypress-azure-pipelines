@@ -16,5 +16,4 @@ Instead of needing a PR to run your tests on the pipeline, you could setup your 
 - This is for non-automated PR builds as it needs a manual trigger from Azure with a selection of variables and branch.
 - The code in this repository is merely a demonstration and much of it needs changing based on your config and variables.
 
-
-https://imgur.com/a/YQHCkjf
+![image](https://user-images.githubusercontent.com/46319030/234266357-3e5fab74-0034-46ca-a20b-b99a41be20b3.png)
