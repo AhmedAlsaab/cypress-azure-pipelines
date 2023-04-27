@@ -20,7 +20,7 @@ module.exports = defineConfig({
         );
       } else {
         return fs.readJson(
-          `cypress/config/${config.env.selectedSuiteName}/${selectedSuiteEnv}-env.json`
+          `cypress/config/${config.env.selectedSuiteName}/${config.env.selectedSuiteEnv}-env.json`
         );
       }
     },
